@@ -1,6 +1,11 @@
 import * as dynamoDbLib from "./libs/dynamodb-lib";
 import uuid;
 const csv = require('fast-csv');
+const fs = require('fs');
+
+// Use earId to map weights + collectionTime
+// a) Ignore redundant earIds from both [Item][userId] && [Item][earId]
+// b) forEach earId, associate each weight + collectionTime w/ same earId
 
 export async function main(event, context) {
   const bucket = event['Records'][0]['s3']['bucket']['name'];
@@ -10,35 +15,51 @@ export async function main(event, context) {
     Key: key
   };
   const s3Stream = s3.getObject(s3Params).createReadStream();
+  // const s3Stream = fs.createReadStream('/Users/plucas/sandbox/upload.csv');
 
-  csv.fromStream(s3Stream, {headers: true})
+  csv.parseStream(s3Stream, {headers: true})
+    // Create an object w/ const to initiate the item creation process
+    .on('error', error => console.error(error))
     .on('data', (data) => {
+      console.log(data);
+      let mergedMetrics = {};
+      if(Object.keys(data).length > 0) {
+        let idColumn = Object.keys(data)[0];
+        if(!(data[idColumn] in mergedMetrics)) mergedMetrics[data[idColumn]] = {};
+        for(key in data) {
+          if(key !== idColumn) {
+            if(!(key in mergedMetrics[data[idColumn]])) mergedMetrics[data[idColumn]][key] = [];
+            mergedMetrics[data[idColumn]][key].push(data[key]);
+          }
+        }
+      }
+      const dynamoParams = {
         TableName: process.env.tableName,
         Item: {
           userId: event.requestContext.identity.cognitoIdentityId,
           animalId: uuid.v1(),
-          species: species,
-          earId: ear_id,
-          scrapieId: scrapie_id,
-          dob: dob,
-          birthType: birth_type,
-          rearedAs: reared_as,
-          bottleBaby: bottle_baby,
-          onFarm: on_farm,
-          comments: comments,
-          sire: sire,
-          dam: dam,
+          species: data.species,
+          earId: data.earId,
+          scrapieId: data.scrapieId,
+          dob: data.dob,
+          birthType: data.birthType,
+          rearedAs: data.rearedAs,
+          bottleBaby: data.bottleBaby,
+          onFarm: data.onFarm,
+          comments: data.comments,
+          sire: data.sire,
+          dam: data.dam,
           weights: [{
-            weight: integer,
-            collectionTime: timestamp
+            weight: data.weight,
+            collectionTime: data.timestamp
           },
           {
-            weight: integer,
-            collectionTime: timestamp
+            weight: data.weight,
+            collectionTime: data.timestamp
           },
           {
-            weight: integer,
-            collectionTime: timestamp
+            weight: data.weight,
+            collectionTime: data.timestamp
           }],
           attachment: data.attachment,
           createdAt: Date.now()
@@ -49,7 +70,6 @@ export async function main(event, context) {
         await dynamoDbLib.call("put", dynamoParams);
         return success(dynamoParams.Item);
       } catch (e) {
-        // Further console.log what is broken, why and how to fix it
         return failure({ status: false });
       }
     });
