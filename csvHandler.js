@@ -49,18 +49,8 @@ export async function main(event, context) {
           comments: data.comments,
           sire: data.sire,
           dam: data.dam,
-          weights: [{
-            weight: data.weight,
-            collectionTime: data.timestamp
-          },
-          {
-            weight: data.weight,
-            collectionTime: data.timestamp
-          },
-          {
-            weight: data.weight,
-            collectionTime: data.timestamp
-          }],
+          weights: [data.weight],
+          collectionTimes: [data.collectionTimes]
           attachment: data.attachment,
           createdAt: Date.now()
         }
