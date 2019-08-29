@@ -126,6 +126,31 @@ functions:
           cors: true
           authorizer: aws_iam
 
+  csvHandler:
+    # Defines an HTTP API endpoint that calls the main function in csvHandler.js
+    # - path: url path is /farms/{id}
+    # - method: PUT request
+    handler: csvHandler.main
+    events:
+      - http:
+          path: farms/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+
+  livestockAnalytics:
+    # Defines an HTTP API endpoint that calls the averageDailyGain function
+    # in livestockAnalytics.py
+    # - path: url path is /notes/{id}
+    # - method: GET request
+    handler: livestockAnalytics.averageDailyGain
+    events:
+      - http:
+          path: farms/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+
 # Create our resources with separate CloudFormation templates
 resources:
   # API Gateway Errors
