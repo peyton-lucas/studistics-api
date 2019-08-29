@@ -138,18 +138,18 @@ functions:
           cors: true
           authorizer: aws_iam
 
-  livestockAnalytics:
+#  livestockAnalytics:
     # Defines an HTTP API endpoint that calls the averageDailyGain function
     # in livestockAnalytics.py
     # - path: url path is /notes/{id}
     # - method: GET request
-    handler: livestockAnalytics.averageDailyGain
-    events:
-      - http:
-          path: farms/{id}
-          method: get
-          cors: true
-          authorizer: aws_iam
+#    handler: livestockAnalytics.averageDailyGain
+#    events:
+#      - http:
+#          path: farms/{id}
+#          method: get
+#          cors: true
+#          authorizer: aws_iam
 
 # Create our resources with separate CloudFormation templates
 resources:
