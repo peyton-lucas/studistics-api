@@ -1,7 +1,6 @@
 import * as dynamoDbLib from "./libs/dynamodb-lib";
-import uuid;
+import uuid from "uuid";
 const csv = require('fast-csv');
-const fs = require('fs');
 
 // Use earId to map weights + collectionTime
 // a) Ignore redundant earIds from both [Item][userId] && [Item][earId]
@@ -15,7 +14,6 @@ export async function main(event, context) {
     Key: key
   };
   const s3Stream = s3.getObject(s3Params).createReadStream();
-  // const s3Stream = fs.createReadStream('/Users/plucas/sandbox/upload.csv');
 
   csv.parseStream(s3Stream, {headers: true})
     // Create an object w/ const to initiate the item creation process
@@ -26,10 +24,10 @@ export async function main(event, context) {
       if(Object.keys(data).length > 0) {
         let idColumn = Object.keys(data)[0];
         if(!(data[idColumn] in mergedMetrics)) mergedMetrics[data[idColumn]] = {};
-        for(key in data) {
-          if(key !== idColumn) {
-            if(!(key in mergedMetrics[data[idColumn]])) mergedMetrics[data[idColumn]][key] = [];
-            mergedMetrics[data[idColumn]][key].push(data[key]);
+        for(metricKey in data) {
+          if(metricKey !== idColumn) {
+            if(!(metricKey in mergedMetrics[data[idColumn]])) mergedMetrics[data[idColumn]][metricKey] = [];
+            mergedMetrics[data[idColumn]][metricKey].push(data[metricKey]);
           }
         }
       }
@@ -50,7 +48,7 @@ export async function main(event, context) {
           sire: data.sire,
           dam: data.dam,
           weights: [data.weight],
-          collectionTimes: [data.collectionTimes]
+          collectionTimes: [data.collectionTimes],
           attachment: data.attachment,
           createdAt: Date.now()
         }
