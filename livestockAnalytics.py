@@ -4,8 +4,8 @@
 import json
 import numpy as np
 import pandas as pd
-
-
+import boto3
+import sys
 from datetime import datetime
 
 def averageDailyGain(event, context):
@@ -20,8 +20,15 @@ def averageDailyGain(event, context):
         print(interval + " weight is " + livestockFunction(interval))
     """
     # Livestock Data Fetch for userID
-    # Define getFarm(), retrieve output from weights.js for event
-    event = getFarm()
+    db  = boto3.resource('dynamodb')
+    table = db-Table('userId')
+
+    response = table.get_item(
+        {
+            # userIdVal should be userId (i.e. event.requestContext.identity.cognitoIdentityId)
+            'userId': event.requestContext.identity.cognitoIdentityId
+        }
+    )
 
     ids = np.unique(points[:,0])
     day60Weights = []
