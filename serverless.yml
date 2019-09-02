@@ -10,7 +10,8 @@ custom:
   # commands. Or fallsback to what has been set in the provider section.
   stage: ${opt:stage, self:provider.stage}
   # Set the table name here so it can be used while testing locally
-  tableName: ${self:custom.stage}-notes
+  # Change table name to farms
+  tableName: ${self:custom.stage}-farms
   # Set DynamoDB throughput for prod and all other non-prod stages.
   tableThroughputs:
     prod: 5
@@ -51,7 +52,8 @@ provider:
       # Restrict IAM role permissions to
       # the specific table for the stage
       Resource:
-        - "Fn::GetAtt": [ NotesTable, Arn ]
+        # Changed to LivestockTable to test building new DynamoDB
+        - "Fn::GetAtt": [ LivestockTable, Arn ]
 
 functions:
   # Defines an HTTP API endpoint that calls the main function in create.js
