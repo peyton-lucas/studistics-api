@@ -23,6 +23,7 @@ def averageDailyGain(event, context):
     db  = boto3.resource('dynamodb')
     table = db-Table('userId')
     # Livestock Data Fetch for userID
+    # Test deployment
     response = table.get_item(
         {
             # userIdVal should be userId (i.e. event.requestContext.identity.cognitoIdentityId)
