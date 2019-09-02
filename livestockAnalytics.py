@@ -19,10 +19,10 @@ def averageDailyGain(event, context):
       for each interval in benchmarkInterval
         print(interval + " weight is " + livestockFunction(interval))
     """
-    # Livestock Data Fetch for userID
+
     db  = boto3.resource('dynamodb')
     table = db-Table('userId')
-
+    # Livestock Data Fetch for userID
     response = table.get_item(
         {
             # userIdVal should be userId (i.e. event.requestContext.identity.cognitoIdentityId)
