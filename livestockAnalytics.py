@@ -1,6 +1,3 @@
-# Convert to python Lambda function
-# In return statement - return data as JSON object output instead of asarray output
-
 import json
 import numpy as np
 import pandas as pd
