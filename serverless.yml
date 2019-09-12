@@ -29,7 +29,7 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  # Add runtimes to account for languages used
   stage: dev
   region: us-east-1
 
@@ -120,6 +120,7 @@ functions:
 #          authorizer: aws_iam
 
   billing:
+    runtime: nodejs8.10
     handler: billing.main
     events:
       - http:
@@ -132,6 +133,7 @@ functions:
     # Defines an HTTP API endpoint that calls the main function in csvHandler.js
     # - path: url path is /farms/{id}
     # - method: PUT request
+    runtime: nodejs8.10
     handler: csvHandler.main
     events:
       - http:
@@ -140,19 +142,20 @@ functions:
           cors: true
           authorizer: aws_iam
 
-#  livestockAnalytics:
-#    # Defines an HTTP API endpoint that calls the averageDailyGain function
-#    # in livestockAnalytics.py
-#    # - path: url path is /notes/{id}
-#    # - method: GET request
-#    # handler: file_name.function_name
-#    handler: livestockAnalytics.averageDailyGain
-#    events:
-#      - http:
-#          path: farms/{id}
-#          method: get
-#          cors: true
-#          authorizer: aws_iam
+  livestockAnalytics:
+    # Defines an HTTP API endpoint that calls the averageDailyGain function
+    # in livestockAnalytics.py
+    # - path: url path is /notes/{id}
+    # - method: GET request
+    # handler: file_name.function_name
+    runtime: python3.6
+    handler: livestockAnalytics.averageDailyGain
+    events:
+      - http:
+          path: farms/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
 
 # Create our resources with separate CloudFormation templates
 resources:
