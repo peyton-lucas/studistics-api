@@ -4,6 +4,7 @@ service: notes-app-2-api
 plugins:
   - serverless-webpack
   - serverless-offline
+  - serverless-python-requirements
 
 custom:
   # Stage is based on what is passed in when running serverless
@@ -24,6 +25,9 @@ custom:
   # Load secret environment variables based on current stage.
   # Fallback to default if it is not in prod.
   environment: ${file(env.yml):${self:custom.stage}, file(env.yml):default}
+  # Add requirements to run python lambdas thru serverless deployments
+  pythonRequirements:
+    dockerizePip: non-linux
 
 
 
