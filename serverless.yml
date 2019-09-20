@@ -4,7 +4,6 @@ service: farm-app-api
 plugins:
   - serverless-webpack
   - serverless-offline
-  - serverless-python-requirements
 
 custom:
   # Stage is based on what is passed in when running serverless
@@ -25,16 +24,12 @@ custom:
   # Load secret environment variables based on current stage.
   # Fallback to default if it is not in prod.
   environment: ${file(env.yml):${self:custom.stage}, file(env.yml):default}
-  # Add requirements to run python lambdas thru serverless deployments
-#  pythonRequirements:
-#    dockerImage: lambci/lambda:build-python3.6
-#    dockerizePip: non-linux
 
 
 
 provider:
   name: aws
-  # Add runtimes to account for languages used
+  runtime: nodejs8.10
   stage: dev
   region: us-east-1
 
@@ -67,22 +62,76 @@ functions:
   # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
   #     domain api call
   # - authorizer: authenticate using the AWS IAM role
+#  create:
+#    handler: create.main
+#    events:
+#      - http:
+#          path: notes
+#          method: post
+#          cors: true
+#          authorizer: aws_iam
 
-  billing:
-    runtime: nodejs8.10
-    handler: billing.main
-    events:
-      - http:
-          path: billing
-          method: post
-          cors: true
-          authorizer: aws_iam
+#  get:
+#    # Defines an HTTP API endpoint that calls the main function in get.js
+#    # - path: url path is /notes/{id}
+#    # - method: GET request
+#    handler: get.main
+#    events:
+#      - http:
+#          path: notes/{id}
+#          method: get
+#          cors: true
+#          authorizer: aws_iam
+
+#  list:
+#    # Defines an HTTP API endpoint that calls the main function in list.js
+#    # - path: url path is /notes
+#    # - method: GET request
+#    handler: list.main
+#    events:
+#      - http:
+#          path: notes
+#          method: get
+#          cors: true
+#          authorizer: aws_iam
+
+#  update:
+#    # Defines an HTTP API endpoint that calls the main function in update.js
+#    # - path: url path is /notes/{id}
+#    # - method: PUT request
+#    handler: update.main
+#    events:
+#      - http:
+#          path: notes/{id}
+#          method: put
+#          cors: true
+#          authorizer: aws_iam
+
+#  delete:
+#    # Defines an HTTP API endpoint that calls the main function in delete.js
+#    # - path: url path is /notes/{id}
+#    # - method: DELETE request
+#    handler: delete.main
+#    events:
+#      - http:
+#          path: notes/{id}
+#          method: delete
+#          cors: true
+#          authorizer: aws_iam
+
+#  billing:
+#    handler: billing.main
+#    events:
+#      - http:
+#          path: billing
+#          method: post
+#          cors: true
+#          authorizer: aws_iam
 
   csvHandler:
     # Defines an HTTP API endpoint that calls the main function in csvHandler.js
     # - path: url path is /farms/{id}
     # - method: PUT request
-    runtime: nodejs8.10
     handler: csvHandler.main
     events:
       - http:
@@ -96,8 +145,6 @@ functions:
 #    # in livestockAnalytics.py
 #    # - path: url path is /notes/{id}
 #    # - method: GET request
-#    # handler: file_name.function_name
-#    runtime: python3.6
 #    handler: livestockAnalytics.averageDailyGain
 #    events:
 #      - http:
