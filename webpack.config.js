@@ -20,6 +20,7 @@ module.exports = {
   },
   // Run babel on all .js files and skip those in node_modules
   module: {
+    noParse: /py/,
     rules: [
       {
         test: /\.js$/,

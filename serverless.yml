@@ -1,4 +1,4 @@
-service: notes-app-2-api
+service: farm-app-api
 
 # Use the serverless-webpack plugin to transpile ES6
 plugins:
@@ -26,8 +26,9 @@ custom:
   # Fallback to default if it is not in prod.
   environment: ${file(env.yml):${self:custom.stage}, file(env.yml):default}
   # Add requirements to run python lambdas thru serverless deployments
-  pythonRequirements:
-    dockerizePip: non-linux
+#  pythonRequirements:
+#    dockerImage: lambci/lambda:build-python3.6
+#    dockerizePip: non-linux
 
 
 
@@ -66,62 +67,6 @@ functions:
   # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
   #     domain api call
   # - authorizer: authenticate using the AWS IAM role
-#  create:
-#    handler: create.main
-#    events:
-#      - http:
-#          path: notes
-#          method: post
-#          cors: true
-#          authorizer: aws_iam
-
-#  get:
-#    # Defines an HTTP API endpoint that calls the main function in get.js
-#    # - path: url path is /notes/{id}
-#    # - method: GET request
-#    handler: get.main
-#    events:
-#      - http:
-#          path: notes/{id}
-#          method: get
-#          cors: true
-#          authorizer: aws_iam
-
-#  list:
-#    # Defines an HTTP API endpoint that calls the main function in list.js
-#    # - path: url path is /notes
-#    # - method: GET request
-#    handler: list.main
-#    events:
-#      - http:
-#          path: notes
-#          method: get
-#          cors: true
-#          authorizer: aws_iam
-
-#  update:
-#    # Defines an HTTP API endpoint that calls the main function in update.js
-#    # - path: url path is /notes/{id}
-#    # - method: PUT request
-#    handler: update.main
-#    events:
-#      - http:
-#          path: notes/{id}
-#          method: put
-#          cors: true
-#          authorizer: aws_iam
-
-#  delete:
-#    # Defines an HTTP API endpoint that calls the main function in delete.js
-#    # - path: url path is /notes/{id}
-#    # - method: DELETE request
-#    handler: delete.main
-#    events:
-#      - http:
-#          path: notes/{id}
-#          method: delete
-#          cors: true
-#          authorizer: aws_iam
 
   billing:
     runtime: nodejs8.10
@@ -146,20 +91,20 @@ functions:
           cors: true
           authorizer: aws_iam
 
-  livestockAnalytics:
-    # Defines an HTTP API endpoint that calls the averageDailyGain function
-    # in livestockAnalytics.py
-    # - path: url path is /notes/{id}
-    # - method: GET request
-    # handler: file_name.function_name
-    runtime: python3.6
-    handler: livestockAnalytics.averageDailyGain
-    events:
-      - http:
-          path: farms/{id}
-          method: get
-          cors: true
-          authorizer: aws_iam
+#  livestockAnalytics:
+#    # Defines an HTTP API endpoint that calls the averageDailyGain function
+#    # in livestockAnalytics.py
+#    # - path: url path is /notes/{id}
+#    # - method: GET request
+#    # handler: file_name.function_name
+#    runtime: python3.6
+#    handler: livestockAnalytics.averageDailyGain
+#    events:
+#      - http:
+#          path: farms/{id}
+#          method: get
+#          cors: true
+#          authorizer: aws_iam
 
 # Create our resources with separate CloudFormation templates
 resources:
