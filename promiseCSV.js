@@ -1,6 +1,6 @@
 const csv = require('fast-csv');
 
-export function promiseCSV(stream, options) {
+export default function promiseCSV(stream, options) {
   return new Promise((resolve, reject) => {
     let mergedMetrics = {};
     csv.parseStream(stream, options)
