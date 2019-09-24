@@ -134,7 +134,7 @@ functions:
     # - method: PUT request
     handler: csvHandler.main
     events:
-      - cloudwatchLog: '/aws/lambda/main'
+      - s3: farm-app-api-dev-attachmentsbucket-15ty3vlxeidgh
       - http:
           path: farms/{id}
           method: post
