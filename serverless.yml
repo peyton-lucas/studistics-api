@@ -135,7 +135,6 @@ functions:
     handler: csvHandler.main
     events:
       - s3: farm-app-api-dev-attachmentsbucket-15ty3vlxeidgh
-          event: s3:ObjectCreated:*
           existing: true
       - http:
           path: farms/{id}
