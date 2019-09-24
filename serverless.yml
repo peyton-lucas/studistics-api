@@ -57,7 +57,7 @@ provider:
 
 functions:
   # Defines an HTTP API endpoint that calls the main function in create.js
-  # - path: url path is /notes
+  # - path: url path is /farms
   # - method: POST request
   # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
   #     domain api call
@@ -136,7 +136,7 @@ functions:
     events:
       - http:
           path: farms/{id}
-          method: put
+          method: post
           cors: true
           authorizer: aws_iam
 
