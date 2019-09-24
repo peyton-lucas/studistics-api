@@ -134,14 +134,14 @@ functions:
     # - method: PUT request
     handler: csvHandler.main
     events:
+      - s3:
+          bucket: farm-app-api-dev-attachmentsbucket-15ty3vlxeidgh
+          existing: true
       - http:
           path: farms/{id}
           method: post
           cors: true
           authorizer: aws_iam
-      - s3:
-          bucket: farm-app-api-dev-attachmentsbucket-15ty3vlxeidgh
-          existing: true
 
 #  livestockAnalytics:
 #    # Defines an HTTP API endpoint that calls the averageDailyGain function
