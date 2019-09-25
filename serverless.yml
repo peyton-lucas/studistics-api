@@ -136,7 +136,7 @@ functions:
     handler: csvHandler.main
     events:
       - s3:
-          bucket: AttachmentsBucket
+          bucket: csvs
           events: s3:ObjectCreated:*
           rules:
             - suffix: .csv
