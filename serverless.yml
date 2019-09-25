@@ -141,11 +141,11 @@ functions:
           rules:
             - suffix: .csv
           existing: true
-#      - http:
-#          path: farms/{id}
-#          method: post
-#          cors: true
-#          authorizer: aws_iam
+      - http:
+          path: farms/{id}
+          method: post
+          cors: true
+          authorizer: aws_iam
 
 #  livestockAnalytics:
 #    # Defines an HTTP API endpoint that calls the averageDailyGain function
@@ -163,7 +163,7 @@ functions:
 # Create our resources with separate CloudFormation templates
 resources:
   # API Gateway Errors
-  # - ${file(resources/api-gateway-errors.yml)}
+   - ${file(resources/api-gateway-errors.yml)}
   # DynamoDB
   - ${file(resources/dynamodb-table.yml)}
   # S3
