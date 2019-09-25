@@ -132,10 +132,14 @@ functions:
     # Defines an HTTP API endpoint that calls the main function in csvHandler.js
     # - path: url path is /farms/{id}
     # - method: PUT request
+    # Defines a S3 Bucket that calls the main function in csvHandler.js
     handler: csvHandler.main
     events:
       - s3:
-          bucket: farm-app-api-dev-attachmentsbucket-15ty3vlxeidgh
+          bucket: AttachmentsBucket
+          events: s3:ObjectCreated:*
+          rules:
+            - suffix: .csv
           existing: true
 #      - http:
 #          path: farms/{id}
