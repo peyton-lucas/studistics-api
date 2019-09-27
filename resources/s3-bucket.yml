@@ -1,8 +1,8 @@
 Resources:
-  AttachmentsBucket:
+  S3BucketAttachmentsBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: attachmentsbucket
+      BucketName: my-custom-bucket-name
       # Set the CORS policy
       CorsConfiguration:
         CorsRules:
@@ -30,7 +30,7 @@ Resources:
       Action: 'lambda:InvokeFunction'
       SourceAccount:
         Ref: AWS::AccountId
-      SourceArn: 'arn:aws:s3:::attachmentsbucket'
+      SourceArn: 'arn:aws:s3:::my-custom-bucket-name'
 # Print out the name of the bucket that is created
 Outputs:
   AttachmentsBucketName:
