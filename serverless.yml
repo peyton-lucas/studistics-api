@@ -135,12 +135,12 @@ functions:
     # Defines a S3 Bucket that calls the main function in csvHandler.js
     handler: csvHandler.main
     events:
-      - s3:
-          bucket: csvs
-          events: s3:ObjectCreated:*
-          rules:
-            - suffix: .csv
-          existing: true
+#      - s3:
+#          bucket: csvs
+#          events: s3:ObjectCreated:*
+#          rules:
+#            - suffix: .csv
+#          existing: true
       - http:
           path: farms/{id}
           method: post
@@ -167,7 +167,7 @@ resources:
   # DynamoDB
   - ${file(resources/dynamodb-table.yml)}
   # S3
-#  - ${file(resources/s3-bucket.yml)}
+  - ${file(resources/s3-bucket.yml)}
   # Cognito
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
