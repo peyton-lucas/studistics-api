@@ -2,6 +2,7 @@ Resources:
   AttachmentsBucket:
     Type: AWS::S3::Bucket
     Properties:
+      BucketName: attachmentsbucket
       # Set the CORS policy
       CorsConfiguration:
         CorsRules:
@@ -17,7 +18,19 @@ Resources:
               - DELETE
               - HEAD
             MaxAge: 3000
-
+  # Configuring lambda handler permissions for s3 event
+  CsvHandlerLambdaPermissionAttachmentsbucketS3:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName:
+        'Fn::GetAtt':
+          - CsvHandlerLambdaFunction
+          - Arn
+      Principal: 's3.amazonaws.com'
+      Action: 'lambda:InvokeFunction'
+      SourceAccount:
+        Ref: AWS::AccountId
+      SourceArn: 'arn:aws:s3:::attachmentsbucket'
 # Print out the name of the bucket that is created
 Outputs:
   AttachmentsBucketName:

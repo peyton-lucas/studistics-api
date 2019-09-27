@@ -140,7 +140,7 @@ functions:
           events: s3:ObjectCreated:*
           rules:
             - suffix: .csv
-          existing: true
+          # existing: true
       - http:
           path: farms/{id}
           method: post
