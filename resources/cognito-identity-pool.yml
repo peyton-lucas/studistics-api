@@ -80,7 +80,7 @@ Resources:
                   - Fn::Join:
                     - ''
                     -
-                      - Fn::GetAtt: [AttachmentsBucket, Arn]
+                      - Fn::GetAtt: [S3BucketAttachments, Arn]
                       - '/private/'
                       - '$'
                       - '{cognito-identity.amazonaws.com:sub}/*'

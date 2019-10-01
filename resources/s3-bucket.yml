@@ -1,8 +1,8 @@
 Resources:
-  S3BucketAttachmentsBucket:
+  S3BucketAttachments:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: my-custom-bucket-name
+      BucketName: studistics-livestock-csv-attachments
       # Set the CORS policy
       CorsConfiguration:
         CorsRules:
@@ -19,7 +19,7 @@ Resources:
               - HEAD
             MaxAge: 3000
   # Configuring lambda handler permissions for s3 event
-  CsvHandlerLambdaPermissionAttachmentsbucketS3:
+  CsvHandlerLambdaPermissionAttachmentsS3:
     Type: 'AWS::Lambda::Permission'
     Properties:
       FunctionName:
@@ -30,9 +30,9 @@ Resources:
       Action: 'lambda:InvokeFunction'
       SourceAccount:
         Ref: AWS::AccountId
-      SourceArn: 'arn:aws:s3:::my-custom-bucket-name'
+      SourceArn: 'arn:aws:s3:::studistics-livestock-csv-attachments'
 # Print out the name of the bucket that is created
 Outputs:
   AttachmentsBucketName:
     Value:
-      Ref: AttachmentsBucket
+      Ref: S3BucketAttachments
