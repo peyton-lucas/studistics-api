@@ -2,7 +2,8 @@ import * as dynamoDbLib from "./libs/dynamodb-lib";
 import { success, failure } from "./libs/response-lib";
 import uuid from "uuid";
 import promiseCSV from "./promiseCSV";
-import * as s3 from "aws-sdk";
+import { S3 } from "aws-sdk";
+
 export async function main(event, context) {
   const bucket = event['Records'][0]['s3']['bucket']['name'];
   const key = event['Records'][0]['s3']['object']['key'];
@@ -10,6 +11,7 @@ export async function main(event, context) {
     Bucket: bucket,
     Key: key
   };
+  const s3 = new S3();
   const s3Stream = s3.getObject(s3Params).createReadStream();
   const mergedMetrics = await promiseCSV(s3Stream, {headers: true});
   try {
