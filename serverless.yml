@@ -54,12 +54,16 @@ provider:
       Resource:
         # Changed to LivestockTable to test building new DynamoDB
         - "Fn::GetAtt": [ LivestockTable, Arn ]
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+      Resource: "arn:aws:s3:::studistics-livestock-csv-attachments/*"
 
 functions:
   csvHandler:
     # Defines an HTTP API endpoint that calls the main function in csvHandler.js
     # - path: url path is /farms/{id}
-    # - method: PUT request
+    # - method: POST request
     # Defines a S3 Bucket that calls the main function in csvHandler.js
     handler: csvHandler.main
     events:
