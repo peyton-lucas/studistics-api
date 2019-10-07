@@ -56,15 +56,15 @@ provider:
         - "Fn::GetAtt": [ LivestockTable, Arn ]
     - Effect: Allow
       Action:
-        - s3:GetObject
+        - s3:*
       Resource: "arn:aws:s3:::studistics-livestock-csv-attachments/*"
 
 functions:
   csvHandler:
+    # Defines a S3 Bucket that calls the main function in csvHandler.js
     # Defines an HTTP API endpoint that calls the main function in csvHandler.js
     # - path: url path is /farms/{id}
     # - method: POST request
-    # Defines a S3 Bucket that calls the main function in csvHandler.js
     handler: csvHandler.main
     events:
       - s3:
@@ -72,25 +72,11 @@ functions:
           events: s3:ObjectCreated:*
           rules:
             - suffix: .csv
-          # existing: true
       - http:
           path: farms/{id}
           method: post
           cors: true
           authorizer: aws_iam
-
-#  livestockAnalytics:
-#    # Defines an HTTP API endpoint that calls the averageDailyGain function
-#    # in livestockAnalytics.py
-#    # - path: url path is /notes/{id}
-#    # - method: GET request
-#    handler: livestockAnalytics.averageDailyGain
-#    events:
-#      - http:
-#          path: farms/{id}
-#          method: get
-#          cors: true
-#          authorizer: aws_iam
 
 # Create our resources with separate CloudFormation templates
 resources:

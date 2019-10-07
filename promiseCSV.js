@@ -4,8 +4,9 @@ export default function promiseCSV(stream, options) {
   return new Promise((resolve, reject) => {
     let mergedMetrics = {};
     csv.parseStream(stream, options)
-      .on('error', error => reject(error))
+      .on('error', error => { console.log(error); reject(error) })
       .on('data', (data) => {
+        console.log(data);
         if (Object.keys(data).length > 0) {
           // idColumn is set to the 1st column val of data (i.e. earId)
           let idColumn = Object.keys(data)[0];
