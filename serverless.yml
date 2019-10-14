@@ -60,6 +60,14 @@ provider:
       Resource: "arn:aws:s3:::studistics-livestock-csv-attachments/*"
 
 functions:
+  create:
+    handler: create.main
+    events:
+      - http:
+          path: farms/{id}
+          method: post
+          cors: true
+          authorizer: aws_iam
   csvHandler:
     # Defines a S3 Bucket that calls the main function in csvHandler.js
     # Defines an HTTP API endpoint that calls the main function in csvHandler.js
