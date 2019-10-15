@@ -70,7 +70,7 @@ functions:
       - stream:
           type: dynamodb
           arn:
-            Fn::GetAtt: [ LivestockTable, Arn ]
+            Fn::GetAtt: [LivestockTable, StreamArn]
   csvHandler:
     # Defines a S3 Bucket that calls the main function in csvHandler.js
     # Defines an HTTP API endpoint that calls the main function in csvHandler.js
