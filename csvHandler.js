@@ -31,6 +31,7 @@ export async function main(event, context) {
         }
       };
       await dynamoDbLib.call("put", record);
+      console.log(record);
     }
     return success({ status: true });
   } catch (e) {

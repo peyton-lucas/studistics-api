@@ -49,6 +49,10 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
+        - dynamodb:DescribeStream
+        - dynamodb:GetRecords
+        - dynamodb:GetShardIterator
+        - dynamodb:ListStreams
       # Restrict IAM role permissions to
       # the specific table for the stage
       Resource:
@@ -63,41 +67,10 @@ functions:
   livestock-analytics:
     handler: livestockAnalytics.averageDailyGain
     events:
-      - http:
-          path: farms/{id}
-          method: post
-          cors: true
-          authorizer: aws_iam
-#      - stream: arn:aws:dynamodb:region:us-east-1:table/process.env.tableName/stream/1970-01-01T00:00:00.000
-#      - stream:
-#          type: dynamodb
-#          arn:
-#            Fn::GetAtt: [MyDynamoDbTable, StreamArn]
-#      - stream:
-#          type: dynamodb
-#          arn:
-#            Fn::ImportValue: MyExportedDynamoDbStreamArnId
-#      - stream:
-#          type: kinesis
-#          arn:
-#            Fn::GetAtt:
-#              - MyKinesisStream
-#              - Arn
-#      - stream:
-#          type: kinesis
-#          arn:
-#            Fn::ImportValue: MyExportedKinesisStreamArnId
-#      - stream:
-#          type: kinesis
-#          arn:
-#            Fn::Join:
-#              - ':'
-#              - - arn
-#                - aws
-#                - kinesis
-#                - Ref: AWS::Region
-#                - Ref: AWS::AccountId
-#                - stream/MyOtherKinesisStream
+      - stream:
+          type: dynamodb
+          arn:
+            Fn::GetAtt: [ LivestockTable, Arn ]
   csvHandler:
     # Defines a S3 Bucket that calls the main function in csvHandler.js
     # Defines an HTTP API endpoint that calls the main function in csvHandler.js
