@@ -4,7 +4,6 @@ service: farm-app-api
 plugins:
   - serverless-webpack
   - serverless-offline
-  - serverless-python-requirements
 
 custom:
   # Stage is based on what is passed in when running serverless
@@ -25,18 +24,10 @@ custom:
   # Load secret environment variables based on current stage.
   # Fallback to default if it is not in prod.
   environment: ${file(env.yml):${self:custom.stage}, file(env.yml):default}
-  pythonRequirements:
-    dockerizePip: non-linux
-    zip: true
-    slim: true
-
-package:
-  exclude:
-    - venv/**
 
 provider:
   name: aws
-  runtime: python3.7
+  runtime: nodejs10.x
   stage: dev
   region: us-east-1
 
@@ -56,10 +47,6 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-        - dynamodb:DescribeStream
-        - dynamodb:GetRecords
-        - dynamodb:GetShardIterator
-        - dynamodb:ListStreams
       # Restrict IAM role permissions to
       # the specific table for the stage
       Resource:
@@ -71,25 +58,12 @@ provider:
       Resource: "arn:aws:s3:::studistics-livestock-csv-attachments/*"
 
 functions:
-  livestock-analytics:
-    handler: livestockAnalytics.averageDailyGain
-    events:
-      - stream:
-          type: dynamodb
-          arn:
-            Fn::GetAtt: [LivestockTable, StreamArn]
-      - http:
-          path: farms/{id}
-          method: get
-          cors: true
-          authorizer: aws_iam
   csvHandler:
     # Defines a S3 Bucket that calls the main function in csvHandler.js
     # Defines an HTTP API endpoint that calls the main function in csvHandler.js
     # - path: url path is /farms/{id}
     # - method: POST request
     handler: csvHandler.main
-    runtime: nodejs8.10
     events:
       - s3:
           bucket: attachments
@@ -101,6 +75,15 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  dataFetch:
+    handler: dataFetch.main
+    events:
+      - http:
+          path: farms/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+
 
 # Create our resources with separate CloudFormation templates
 resources:

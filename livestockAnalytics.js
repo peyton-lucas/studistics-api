@@ -9,6 +9,7 @@ let dataFrame = function() {
 let dfPromise = dataFrame();
 
 dfPromise.then(function(df) {
+  // console.log(df.toJSON());
   const day60Weights = [];
   const day90Weights = [];
   const day120Weights = [];
@@ -24,7 +25,7 @@ dfPromise.then(function(df) {
 
     if (weights.length >= 3) {
       const predictedWeights = linear([60*86400, 90*86400, 120*86400], collectionTimes, weights);
-
+      console.log(predictedWeights);
       day60Weights.push(predictedWeights[0]);
       day90Weights.push(predictedWeights[1]);
       day120Weights.push(predictedWeights[2]);

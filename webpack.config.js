@@ -5,7 +5,7 @@ module.exports = {
   entry: slsw.lib.entries,
   target: "node",
   // Generate sourcemaps for proper error messages
-  devtool: 'source-map',
+  devtool: "source-map",
   // Since 'aws-sdk' is not compatible with webpack,
   // we exclude all node dependencies
   externals: [nodeExternals()],
@@ -20,7 +20,6 @@ module.exports = {
   },
   // Run babel on all .js files and skip those in node_modules
   module: {
-    noParse: /py/,
     rules: [
       {
         test: /\.js$/,
