@@ -13,21 +13,22 @@ export async function main(event, context) {
   };
   const s3 = new S3();
   const s3Stream = s3.getObject(s3Params).createReadStream();
-  const mergedMetrics = await promiseCSV(s3Stream, {headers: true});
+  const rows = await promiseCSV(s3Stream, {headers: true});
+  console.log("After promiseCSV: ");
+  console.log(rows);
   const userId = key.split('/')[1].split(':')[1];
   try {
-    for (const earId in mergedMetrics) {
+    for (const row of rows) {
       const record = {
         TableName: process.env.tableName,
         Item: {
           userId: userId,
           animalId: uuid.v1(),
-          earId: {
-            sire: mergedMetrics[earId].sire,
-            dam: mergedMetrics[earId].dam,
-            weights: mergedMetrics[earId].weight,
-            collectionTime: mergedMetrics[earId].collectionTime
-          }
+          // sire: mergedMetrics[earId].sire,
+          // dam: mergedMetrics[earId].dam,
+          earId: row.earId,
+          weight: row.weight,
+          collectionTime: row.collectionTime
         }
       };
       await dynamoDbLib.call("put", record);
