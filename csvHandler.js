@@ -18,6 +18,7 @@ export async function main(event, context) {
   console.log(rows);
   const userId = key.split('/')[1].split(':')[1];
   try {
+    const dynamoPromises = [];
     for (const row of rows) {
       const record = {
         TableName: process.env.tableName,
@@ -31,9 +32,10 @@ export async function main(event, context) {
           collectionTime: row.collectionTime
         }
       };
-      await dynamoDbLib.call("put", record);
+      dynamoPromises.push(dynamoDbLib.call("put", record));
       console.log(record);
     }
+    await Promise.all(dynamoPromises);
     return success({ status: true });
   } catch (e) {
     return failure({ status: false });
