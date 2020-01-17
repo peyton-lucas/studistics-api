@@ -1,5 +1,5 @@
 service: farm-app-api
-
+# Deployment ready
 # Use the serverless-webpack plugin to transpile ES6
 plugins:
   - serverless-webpack
