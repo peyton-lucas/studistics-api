@@ -2,7 +2,7 @@ Resources:
   S3BucketAttachments:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: studistics-livestock-csv-attachments
+      BucketName: ${self:custom.attachmentsBucket}
       # Set the CORS policy
       CorsConfiguration:
         CorsRules:
@@ -30,7 +30,7 @@ Resources:
       Action: 'lambda:InvokeFunction'
       SourceAccount:
         Ref: AWS::AccountId
-      SourceArn: 'arn:aws:s3:::studistics-livestock-csv-attachments'
+      SourceArn: 'arn:aws:s3:::${self:custom.attachmentsBucket}'
 # Print out the name of the bucket that is created
 Outputs:
   AttachmentsBucketName:
