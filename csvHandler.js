@@ -5,6 +5,7 @@ import promiseCSV from "./promiseCSV";
 import { S3 } from "aws-sdk";
 
 export async function main(event, context) {
+  console.log(JSON.stringify(event));
   const bucket = event['Records'][0]['s3']['bucket']['name'];
   const key = decodeURIComponent(event['Records'][0]['s3']['object']['key']);
   const s3Params = {
