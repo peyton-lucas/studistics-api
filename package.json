@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.6.3",
-    "aws-sdk": "^2.539.0",
+    "aws-sdk": "^2.814.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-plugin-source-map-support": "^1.0.0",
